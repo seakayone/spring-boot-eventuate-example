@@ -1,11 +1,11 @@
-package com.example.web;
+package com.example.complaints.store.web;
 
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-import com.example.eventlog.ComplaintReader;
-import com.example.eventlog.ComplaintWriter;
-import com.example.web.model.Complaint;
+import com.example.complaints.store.eventlog.ComplaintReader;
+import com.example.complaints.store.eventlog.ComplaintWriter;
+import com.example.complaints.store.web.model.Complaint;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

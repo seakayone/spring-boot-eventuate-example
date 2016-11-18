@@ -1,0 +1,15 @@
+buildscript {
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+  compile "org.springframework.boot:spring-boot-starter-web"
+  compile "com.rbmhtechnology:eventuate-core_2.11:${eventuateVersion}"
+  compile "com.rbmhtechnology:eventuate-log-leveldb_2.11:${eventuateVersion}"
+
+  testCompile "org.springframework.boot:spring-boot-starter-test"
+}

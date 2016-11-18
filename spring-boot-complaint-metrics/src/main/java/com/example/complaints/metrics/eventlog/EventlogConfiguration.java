@@ -1,4 +1,4 @@
-package com.example.eventlog;
+package com.example.complaints.metrics.eventlog;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -35,15 +35,9 @@ public class EventlogConfiguration {
     }
 
     @Bean
-    @Qualifier("complaintWriter")
-    public ActorRef complaintWriter(final ActorSystem system, @Qualifier("eventLog") final ActorRef eventLog) {
-        return system.actorOf(Props.create(ComplaintWriter.class, () -> new ComplaintWriter("cw", eventLog)));
-    }
-
-    @Bean
-    @Qualifier("complaintReader")
-    public ActorRef complaintReader(final ActorSystem system, @Qualifier("eventLog") final ActorRef eventLog) {
-        return system.actorOf(Props.create(ComplaintReader.class, () -> new ComplaintReader("cr", eventLog)));
+    @Qualifier("complaintMetrics")
+    public ActorRef complaintMetrics(final ActorSystem system, @Qualifier("eventLog") final ActorRef eventLog) {
+        return system.actorOf(Props.create(ComplaintMetrics.class, () -> new ComplaintMetrics("cm", eventLog)));
     }
 
 }

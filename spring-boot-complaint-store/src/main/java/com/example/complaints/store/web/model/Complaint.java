@@ -1,4 +1,4 @@
-package com.example.web.model;
+package com.example.complaints.store.web.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

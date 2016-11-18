@@ -1,4 +1,4 @@
-package com.example.eventlog.events;
+package com.example.complaints.events;
 
 import java.io.Serializable;
 

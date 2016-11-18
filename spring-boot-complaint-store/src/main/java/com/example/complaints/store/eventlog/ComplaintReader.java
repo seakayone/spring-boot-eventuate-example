@@ -1,9 +1,9 @@
-package com.example.eventlog;
+package com.example.complaints.store.eventlog;
 
 import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
-import com.example.eventlog.events.ComplaintCreated;
-import com.example.web.model.Complaint;
+import com.example.complaints.events.ComplaintCreated;
+import com.example.complaints.store.web.model.Complaint;
 import com.rbmhtechnology.eventuate.AbstractEventsourcedView;
 
 import java.util.HashMap;

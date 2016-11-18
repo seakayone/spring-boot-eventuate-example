@@ -1,8 +1,8 @@
-package com.example.eventlog;
+package com.example.complaints.store.eventlog;
 
 import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
-import com.example.eventlog.events.ComplaintCreated;
+import com.example.complaints.events.ComplaintCreated;
 import com.rbmhtechnology.eventuate.AbstractEventsourcedActor;
 import com.rbmhtechnology.eventuate.ResultHandler;
 
