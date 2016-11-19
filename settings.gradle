@@ -1,1 +1,1 @@
-include 'spring-boot-complaint-store', 'spring-boot-complaint-metrics'
+include 'events-model', 'spring-boot-complaint-store', 'spring-boot-complaint-metrics'
