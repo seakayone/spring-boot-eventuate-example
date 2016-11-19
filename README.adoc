@@ -2,18 +2,18 @@
 
 Simple example of how to use https://github.com/RBMHTechnology/eventuate/[eventuate] with http://spring.io/[Spring Boot].
 
-This project consists of two sub projects.
+This project consists of a couple of sub projects:
 
-1. *spring-boot-complaint-store* :8080
-   This project is emitting ComplaintCreated events and makes the them accessible using a simple REST API:
-   
+1. *events-model* This project contains the shared events model for every event source service.
+
+2. *spring-boot-complaint-store* This is a Spring Boot service running on port 8080. It emits ComplaintCreated events and makes the them accessible using a simple REST API:
+
    POST :8080 {"id":"1", "company":"Acme", "description":"Your stuff breaks"} // creates a new complaint
-   
+
    GET  :8080    // returns all complaints
-   
+
    GET  :8080/id // returns a single complaints with the corresponding id
 
-1. *spring-boot-complaint-metrics* :8081
-   This project is consuming ComplaintCreated events and calculates a simple metric on how many complaints exist for every given company and makes this accessible using a simple REST API:
-   
+3. *spring-boot-complaint-metrics* This is a Spring Boot service running on port 8081. It consumes ComplaintCreated events and calculates a simple metric on how many complaints exist for every given company and makes the metric accessible using a simple REST API:
+
    GET  :8081    // returns the metric
