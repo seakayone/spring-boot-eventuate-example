@@ -6,6 +6,7 @@ import akka.util.Timeout;
 import com.example.complaints.store.eventlog.ComplaintReader;
 import com.example.complaints.store.eventlog.ComplaintWriter;
 import com.example.complaints.store.web.model.Complaint;
+import javaslang.control.Option;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
-import java.util.Optional;
 
 @RestController
 public class ComplaintAPI {
@@ -45,13 +45,12 @@ public class ComplaintAPI {
     @GetMapping("{id}")
     public ResponseEntity findOne(@PathVariable String id) throws Exception {
         Future<Object> future = Patterns.ask(complaintReader, new ComplaintReader.FindOne(id), TIMEOUT);
-        Object result = Await.result(future, TIMEOUT.duration());
-        if (((Optional) result).isPresent()) {
-            return ResponseEntity.ok(((Optional) result).get());
+        Option result = (Option) Await.result(future, TIMEOUT.duration());
+        if (result.isDefined()) {
+            return ResponseEntity.ok(result.get());
         }
         return ResponseEntity.notFound().build();
     }
-
 
     @GetMapping()
     public ResponseEntity findAll() throws Exception {

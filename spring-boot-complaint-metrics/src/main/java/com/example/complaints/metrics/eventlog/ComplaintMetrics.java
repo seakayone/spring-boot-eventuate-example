@@ -4,28 +4,26 @@ import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 import com.example.complaints.events.ComplaintCreated;
 import com.rbmhtechnology.eventuate.AbstractEventsourcedView;
+import javaslang.collection.HashMap;
+import javaslang.collection.Map;
+import javaslang.control.Option;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class ComplaintMetrics extends AbstractEventsourcedView {
 
-    private Map<String, Integer> complaints = new HashMap<>();
+    private Map<String, Integer> nrOfComplaintsPerCompany = HashMap.empty();
 
     public ComplaintMetrics(String id, ActorRef eventLog) {
         super(id, eventLog);
         setOnEvent(ReceiveBuilder.match(
                 ComplaintCreated.class, evt -> {
-                    if (complaints.get(evt.company) != null) {
-                        complaints.put(evt.company, complaints.get(evt.company) + 1);
-                    } else {
-                        complaints.put(evt.company, 1);
-                    }
+                    Option<Integer> nrOfComplaints = nrOfComplaintsPerCompany.get(evt.company);
+                    nrOfComplaintsPerCompany = nrOfComplaintsPerCompany.put(evt.company, nrOfComplaints.getOrElse(0) + 1);
                 })
                 .build()
         );
         setOnCommand(ReceiveBuilder
-                .match(FindAll.class, cmd -> sender().tell(complaints, self()))
+                .match(FindAll.class, cmd -> sender().tell(nrOfComplaintsPerCompany, self()))
                 .build()
         );
     }

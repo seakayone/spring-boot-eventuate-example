@@ -2,6 +2,7 @@ allprojects {
   buildscript {
     ext {
       springBootVersion = '1.4.2.RELEASE'
+      javaslangVersion = '2.0.4'
     }
     repositories {
         jcenter()

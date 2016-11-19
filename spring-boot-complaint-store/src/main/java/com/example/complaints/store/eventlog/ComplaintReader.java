@@ -5,33 +5,31 @@ import akka.japi.pf.ReceiveBuilder;
 import com.example.complaints.events.ComplaintCreated;
 import com.example.complaints.store.web.model.Complaint;
 import com.rbmhtechnology.eventuate.AbstractEventsourcedView;
+import javaslang.collection.List;
+import javaslang.control.Option;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class ComplaintReader extends AbstractEventsourcedView {
 
-    private Map<String, Complaint> complaints = new HashMap<>();
+    private List<Complaint> complaints = List.empty();
 
     public ComplaintReader(String id, ActorRef eventLog) {
         super(id, eventLog);
         setOnEvent(ReceiveBuilder.match(
-                ComplaintCreated.class, cmd -> complaints.put(cmd.id, new Complaint(cmd.id, cmd.company, cmd.description)))
+                ComplaintCreated.class, cmd -> complaints = complaints.append(new Complaint(cmd.id, cmd.company, cmd.description)))
                 .build()
         );
         setOnCommand(ReceiveBuilder
                 .match(FindOne.class, cmd -> sender().tell(findOne(cmd.id), self()))
-                .match(FindAll.class, cmd -> sender().tell(complaints.entrySet(), self()))
+                .match(FindAll.class, cmd -> sender().tell(complaints, self()))
                 .build()
         );
     }
 
-    private Optional<Complaint> findOne(String id) {
-        return complaints.entrySet().stream()
-                .filter(e -> e.getKey().equals(id))
-                .findFirst()
-                .map(r -> r.getValue());
+    private Option<Complaint> findOne(String id) {
+        return complaints.toStream()
+                .find(e -> e.getId().equals(id));
     }
 
     public static class FindOne {
