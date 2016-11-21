@@ -4,16 +4,68 @@ Simple example of how to use https://github.com/RBMHTechnology/eventuate/[eventu
 
 This project consists of a couple of sub projects:
 
-1. *events-model* This project contains the shared events model for every event source service.
+## events-model
+This project contains the shared events model for every event source service.
 
-2. *spring-boot-complaint-store* This is a Spring Boot service running on port 8080. It emits ComplaintCreated events and makes the them accessible using a simple REST API:
+## *spring-boot-complaint-store*
+This is a Spring Boot service running on port 8080. It emits ComplaintCreated events and makes the them accessible using a simple REST API:
 
-   POST :8080 {"id":"1", "company":"Acme", "description":"Your stuff breaks"} // creates a new complaint
+.Creating a new complaint
+Request:
 
-   GET  :8080    // returns all complaints
+    POST localhost:8080 {"company":"Accme", "description":"I am missing my [esc] key"}
 
-   GET  :8080/id // returns a single complaints with the corresponding id
+Response:
 
-3. *spring-boot-complaint-metrics* This is a Spring Boot service running on port 8081. It consumes ComplaintCreated events and calculates a simple metric on how many complaints exist for every given company and makes the metric accessible using a simple REST API:
+    {"id" : "69c13e8d-7c97-488e-afe1-b8377e8b3681", "company":"Acme", "description":"I am missing my [esc] key"}
 
-   GET  :8081    // returns the metric
+.Finding all complaints
+
+Request:
+
+   GET  localhost:8080
+
+Response:
+
+    [
+        {
+            "id" : "69c13e8d-7c97-488e-afe1-b8377e8b3681",
+            "company" : "Accme",
+            "description" : "I am missing my [esc] key"}
+        },
+        {
+            "id" : "c4d3367e-596b-43a4-ba0a-ae91f78641d1",
+            "company" : "Black Hole",
+            "description" : "Everything is so dark"
+         }
+    ]
+
+.Finding a single complaint by id
+
+Request:
+
+    GET  localhost:8080/69c13e8d-7c97-488e-afe1-b8377e8b3681
+
+Response:
+
+    {
+        "id" : "69c13e8d-7c97-488e-afe1-b8377e8b3681",
+        "company":"Accme",
+        "description":"I am missing my [esc] key"
+    }
+
+## *spring-boot-complaint-metrics*
+This is a Spring Boot service running on port 8081. It consumes ComplaintCreated events and calculates a simple metric on how many complaints exist for every given company and makes the metric accessible using a simple REST API:
+
+.Getting the metrics
+
+Request:
+
+   GET  localhost:8081
+
+Response:
+
+    {
+        "Accme" : 1,
+        "Black Hole" : 1
+    }

@@ -15,6 +15,8 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
+import java.util.UUID;
+
 
 @RestController
 public class ComplaintAPI {
@@ -31,7 +33,7 @@ public class ComplaintAPI {
 
     @PostMapping()
     public ResponseEntity createComplaint(@RequestBody Complaint complaint) throws Exception {
-        ComplaintWriter.CreateComplaint createCompl = new ComplaintWriter.CreateComplaint(complaint.getId(), complaint.getCompany(), complaint.getDescription());
+        ComplaintWriter.CreateComplaint createCompl = new ComplaintWriter.CreateComplaint(UUID.randomUUID().toString(), complaint.getCompany(), complaint.getDescription());
         Future<Object> future = Patterns.ask(complaintWriter, createCompl, TIMEOUT);
         Object result = Await.result(future, TIMEOUT.duration());
         if (result instanceof ComplaintWriter.CreateComplaintSuccess) {
