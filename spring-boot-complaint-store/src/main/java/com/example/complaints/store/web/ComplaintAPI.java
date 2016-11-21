@@ -35,7 +35,7 @@ public class ComplaintAPI {
         Future<Object> future = Patterns.ask(complaintWriter, createCompl, TIMEOUT);
         Object result = Await.result(future, TIMEOUT.duration());
         if (result instanceof ComplaintWriter.CreateComplaintSuccess) {
-            return ResponseEntity.ok(((ComplaintWriter.CreateComplaintSuccess) result).id);
+            return ResponseEntity.ok(((ComplaintWriter.CreateComplaintSuccess) result).created);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(((ComplaintWriter.CreateComplaintFailure) result).cause.getMessage());

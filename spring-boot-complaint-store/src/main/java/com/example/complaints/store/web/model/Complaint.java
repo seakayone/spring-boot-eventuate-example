@@ -1,5 +1,6 @@
 package com.example.complaints.store.web.model;
 
+import com.example.complaints.events.ComplaintCreated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,6 +9,12 @@ public class Complaint {
     private final String id;
     private final String company;
     private final String description;
+
+    public Complaint(ComplaintCreated event) {
+        this.id = event.id;
+        this.company = event.company;
+        this.description = event.description;
+    }
 
     @JsonCreator
     public Complaint(@JsonProperty("id") String id,
