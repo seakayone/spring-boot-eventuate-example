@@ -25,5 +25,5 @@ allprojects {
       eventuateVersion = "0.8.1"
   }
 
-  wrapper.gradleVersion = "3.2"
+  wrapper.gradleVersion = "3.2.1"
 }
